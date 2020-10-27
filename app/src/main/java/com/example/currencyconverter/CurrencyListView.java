@@ -24,6 +24,7 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 public class CurrencyListView extends AppCompatActivity{
 
@@ -72,16 +73,17 @@ public class CurrencyListView extends AppCompatActivity{
                         Log.d("@LOG", base);
                         data = response.getJSONObject("rates");
 
-                        int[] flagIDs = {R.drawable.usaflag, R.drawable.englandflag, R.drawable.japanflag, R.drawable.chinaflag, R.drawable.rusiaflag, R.drawable.indiaflag, R.drawable.koreaflag};
-                        String[] shortCurrencyName = {"USD", "GBP", "JPY", "CNY", "RUB", "INR", "KRW"};
-                        String[] fullCurrencyName = {"United States Dollar $", "Pound Sterling £", "Japanese Yen ¥", "Chinese Yuan 元", "Russian Ruble ₽", "Indian Rupee ₹", "South Korean Won ₩"};
-                        double[] toCurrency = {data.getDouble("USD"), data.getDouble("GBP"), data.getDouble("JPY"), data.getDouble("CNY"), data.getDouble("RUB"), data.getDouble("INR"), data.getDouble("KRW")};
-                        double[] value = {0, 0, 0, 0, 0, 0, 0, 0};
-                        for (int i = 0; i < flagIDs.length; i++) {
-                            Currency currency = new Currency(BitmapFactory.decodeResource(getResources(), flagIDs[i]), shortCurrencyName[i], fullCurrencyName[i], toCurrency[i], value[i]);
+                        ArrayList<String> shortCurrencyName = new ArrayList<>() ;
+                                Iterator<String> iter = data.keys() ;
+                                        while(iter.hasNext()){
+                                            String key = iter.next();
+                                            shortCurrencyName.add(key);
+                                        }
+                        for (int i = 0; i < shortCurrencyName.size(); i++) {
+                            Currency currency = new Currency(shortCurrencyName.get(i), "", data);
                             currencyList.add(currency);
+                            adapter.notifyDataSetChanged();
                         }
-                        initComponents(currencyList);
 
                     } catch (Exception e) {
                         Log.d("ERROR", e.toString());
@@ -113,6 +115,7 @@ public class CurrencyListView extends AppCompatActivity{
             super.onPostExecute(signal);
             Log.d("@LOG", "onPostExecute");
             if(signal != null && signal.equals("doInBackground DONE")){
+                initComponents(currencyList);
                 ProgressBar progressBar = findViewById(R.id.progress_bar);
                 progressBar.setVisibility(View.GONE);
             }

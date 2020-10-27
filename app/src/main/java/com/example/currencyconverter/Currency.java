@@ -4,23 +4,22 @@ import android.graphics.Bitmap;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class Currency implements Parcelable {
-    private Bitmap flag;
     private String shortCurrencyName;
     private String fullCurrencyName;
     private double toCurrency;
     private double value;
 
-    public Currency(Bitmap flag, String shortCurrencyName, String fullCurrencyName, double toCurrency, double value) {
-        this.flag = flag;
+    public Currency(String shortCurrencyName, String fullCurrencyName, JSONObject data) throws JSONException {
         this.shortCurrencyName = shortCurrencyName;
         this.fullCurrencyName = fullCurrencyName;
-        this.toCurrency = toCurrency;
-        this.value = value;
+        this.toCurrency = data.getDouble(shortCurrencyName);
     }
 
     protected Currency(Parcel in) {
-        flag = in.readParcelable(Bitmap.class.getClassLoader());
         shortCurrencyName = in.readString();
         fullCurrencyName = in.readString();
         toCurrency = in.readDouble();
@@ -38,14 +37,6 @@ public class Currency implements Parcelable {
             return new Currency[size];
         }
     };
-
-    public Bitmap getFlag() {
-        return flag;
-    }
-
-    public void setFlag(Bitmap flag) {
-        this.flag = flag;
-    }
 
     public String getShortCurrencyName() {
         return shortCurrencyName;
@@ -76,7 +67,7 @@ public class Currency implements Parcelable {
         return value;
     }
 
-    public void setValue(double value) {
+    public void setValue(double value){
         this.value = value * toCurrency;
     }
 
@@ -87,7 +78,6 @@ public class Currency implements Parcelable {
 
     @Override
     public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeParcelable(flag, i);
         parcel.writeString(shortCurrencyName);
         parcel.writeString(fullCurrencyName);
         parcel.writeDouble(toCurrency);

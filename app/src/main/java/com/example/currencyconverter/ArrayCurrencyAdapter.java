@@ -42,14 +42,14 @@ public class ArrayCurrencyAdapter extends ArrayAdapter<Currency> {
             convertView = layoutInflater.inflate(layoutID,null,false);
         }
 
-        ImageView imageView = convertView.findViewById(R.id.iv_flag);
+        //ImageView imageView = convertView.findViewById(R.id.iv_flag);
         TextView tvShortCurrencyName = convertView.findViewById(R.id.tv_shortCurrencyName);
         TextView tvFullCurrencyName = convertView.findViewById(R.id.tv_fullCurrencyName);
         TextView tvValue = convertView.findViewById(R.id.tv_value);
 
         Currency currency = currencyList.get(position);
 
-        imageView.setImageBitmap(currency.getFlag());
+        //imageView.setImageBitmap(currency.getFlag());
         tvShortCurrencyName.setText(currency.getShortCurrencyName());
         tvFullCurrencyName.setText(currency.getFullCurrencyName());
         if(currency.getValue() == 0)
