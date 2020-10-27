@@ -356,5 +356,4 @@ public class MainActivity extends AppCompatActivity {
         btn.setTextColor(Color.parseColor("#FF9800"));
         btn.setBackgroundTintList(ColorStateList.valueOf(Color.parseColor("#FFFFFF")));
     }
-
 }

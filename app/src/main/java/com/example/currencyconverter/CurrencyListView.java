@@ -47,7 +47,6 @@ public class CurrencyListView extends AppCompatActivity{
         if(firstTimeLoadData == true) {
             currencyList = new ArrayList<>();
             new MyAsyncTask().execute(currencyList);
-            firstTimeLoadData = false;
         }
 
         else initComponents(currencyList);
@@ -59,7 +58,6 @@ public class CurrencyListView extends AppCompatActivity{
 
         @Override
         protected String doInBackground(ArrayList... arrayLists) {
-
             final ArrayList<Currency> currencyList = arrayLists[0];
 
             final String url = "https://api.exchangeratesapi.io/latest";
@@ -82,6 +80,7 @@ public class CurrencyListView extends AppCompatActivity{
                         for (int i = 0; i < shortCurrencyName.size(); i++) {
                             Currency currency = new Currency(shortCurrencyName.get(i), "", data);
                             currencyList.add(currency);
+                            firstTimeLoadData = false;
                             adapter.notifyDataSetChanged();
                         }
 
@@ -92,7 +91,7 @@ public class CurrencyListView extends AppCompatActivity{
             }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-                    Toast.makeText(getApplicationContext(), "Error, check connection", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "No internet connection", Toast.LENGTH_SHORT).show();
                 }
             });
 
